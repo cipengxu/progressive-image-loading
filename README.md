@@ -3,3 +3,12 @@ React实现的渐进式加载图片组件（Progressive Image Loading Component�
 共分2种模式:
 * 缩略图过渡模式，若指定缩略图thumbnailUrl，会在canvas画布中展示放大尺寸的模糊效果的缩略图，等待源文件异步加载完毕后替换展示；<br>
 * 普通模式，若未指定缩略图thumbnailUrl，退化成简单版本的异步加载图片的方式，源文件异步加载完毕即展示。<br>
+
+快速接入步骤
+```sh
+git clone https://github.com/cipengxu/progressive-image-loading.git
+cd progressive-image-loading
+npm install
+npm start
+```
+接下来访问 [localhost:8080](http://localhost:8080/) 就可以看到效果了。
