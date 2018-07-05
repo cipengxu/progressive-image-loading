@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.scenery-img {
+  opacity: 0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+.scenery-img.loaded {
+  opacity: 1;
+}
+.scenery-img-canvas {
+  opacity: 1;
+  -webkit-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+.scenery-img-canvas.unloaded {
+  opacity: 0;
+}
