@@ -145,13 +145,23 @@ export default class ProgressiveImageLoading extends Component {
     return false;
   }
 
-  shouldShowPlaceholder(state) {
-    let { imageUrl, thumbnailLoaded, thumbnailError, imageLoaded, imageError } = state || this.state;
+  shouldShowPlaceholder(state, props) {
+    let { thumbnailLoaded, thumbnailError, imageLoaded, imageError } = state || this.state;
+    let { imageUrl } = props || this.props;
     if (
       !imageUrl ||
       !this._mounted ||
       (this._mounted && !thumbnailLoaded && !thumbnailError && !imageLoaded && !imageError)
     ) {
+      return true;
+    }
+    return false;
+  }
+
+  shouldShowCanvas(state, props) {
+    let { thumbnailLoaded, imageLoaded } = state || this.state;
+    let { thumbnailUrl } = props || this.props;
+    if (thumbnailUrl && (thumbnailLoaded || imageLoaded)) {
       return true;
     }
     return false;
@@ -184,7 +194,10 @@ export default class ProgressiveImageLoading extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     let { thumbnailUrl, imageUrl } = nextProps;
-    if (this.shouldShowPlaceholder() !== this.shouldShowPlaceholder(nextState)) {
+    if (this.shouldShowPlaceholder() !== this.shouldShowPlaceholder(nextState, nextProps)) {
+      return true;
+    }
+    if (this.shouldShowCanvas() !== this.shouldShowCanvas(nextState, nextProps)) {
       return true;
     }
     if (!this.shouldStateUpdate({ thumbnailUrl, imageUrl })) {
@@ -603,9 +616,7 @@ export default class ProgressiveImageLoading extends Component {
         <div className="pil-figure-placeholder">
           <div className="pil-figure-filler" ref={this.setFillerRef} style={this.getFillerStyle()} />
           <div className="pil-figure-media" ref={this.setMediaRef}>
-            {this.shouldShowPlaceholder() || !thumbnailUrl ? null : (
-              <canvas className={this.getCanvasClsName(true)} ref={this.setCanvasRef} />
-            )}
+            {this.shouldShowCanvas() && <canvas className={this.getCanvasClsName(true)} ref={this.setCanvasRef} />}
             {this.shouldShowPlaceholder() && (
               <img className="pil-figure-image-placeholder" src={placeholderUrl} width={width} height={height} />
             )}
