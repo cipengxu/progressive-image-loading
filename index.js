@@ -277,7 +277,7 @@ export default class ProgressiveImageLoading extends Component {
     if (imgUrl) {
       let origImgUrl = imgUrl;
       if (forceFetchImage) {
-        // use `?_t=timestamp` force fetch image even when src does not changed
+        // use `?_t=timestamp` force fetch image even when src does not change
         imgUrl = `${imgUrl}?_t=${new Date().getTime()}`;
       }
       return loadImage(imgUrl).then(
