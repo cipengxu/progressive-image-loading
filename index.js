@@ -14,7 +14,7 @@ const DEFAULT_PLACEHOLDER = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAA
  *  1. 缩略图过渡模式，若指定缩略图thumbnailUrl，会在canvas画布中展示放大尺寸的模糊效果的缩略图，等待源文件异步加载完毕后替换展示；
  *  2. 普通模式，若未指定缩略图thumbnailUrl，退化成简单版本的异步加载图片的方式，源文件异步加载完毕即展示
  * 支持指定模糊值(blurRadius)、占位图、fallback图、强制获取源文件、是否为'双胞胎'图片的自定义函数等
- * @author cpxu@Ctrip.com
+ * @author Cipeng Xu
  */
 export default class ProgressiveImageLoading extends Component {
   static propTypes = {
