@@ -427,9 +427,11 @@ export default class ProgressiveImageLoading extends Component {
       mediaNode.appendChild(this.mountedImage);
       this.timers.push(
         setTimeout(() => {
-          let cl = classlist(this.mountedImage);
-          cl.remove(...imageEffectOffCls);
-          cl.add(...imageEffectOnCls);
+          if (this.mountedImage) {
+            let cl = classlist(this.mountedImage);
+            cl.remove(...imageEffectOffCls);
+            cl.add(...imageEffectOnCls);
+          }
         }, fadeTimeout)
       );
     }
