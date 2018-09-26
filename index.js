@@ -26,6 +26,10 @@ export default class ProgressiveImageLoading extends Component {
     placeholderUrl: PropTypes.string,
     // fallback图片url
     fallbackUrl: PropTypes.string,
+    // 渲染占位图，若同时还指定了placeholderUrl，以placeholder属性为准
+    placeholder: PropTypes.element,
+    // 渲染fallback图片，若同时还指定了fallbackUrl，以fallback属性为准
+    fallback: PropTypes.element,
     // 图片显示的宽度
     width: PropTypes.number,
     // 图片显示的高度
@@ -167,6 +171,11 @@ export default class ProgressiveImageLoading extends Component {
     return false;
   }
 
+  shouldShowFallback(state) {
+    let { imageError } = state || this.state;
+    return !this.shouldShowPlaceholder() && imageError;
+  }
+
   shouldStateUpdate({ thumbnailUrl, imageUrl }) {
     if (!thumbnailUrl && !imageUrl) {
       return false;
@@ -200,6 +209,7 @@ export default class ProgressiveImageLoading extends Component {
     if (this.shouldShowCanvas() !== this.shouldShowCanvas(nextState, nextProps)) {
       return true;
     }
+
     if (!this.shouldStateUpdate({ thumbnailUrl, imageUrl })) {
       return true;
     }
@@ -438,6 +448,10 @@ export default class ProgressiveImageLoading extends Component {
   }
 
   showFallbackImage({ thumbnailUrl, imageUrl }) {
+    let { fallback } = this.props;
+    if (fallback) {
+      return;
+    }
     this.loadFallbackImage(
       (url, e, fallbackImage) => {
         this.showImage(fallbackImage);
@@ -610,34 +624,61 @@ export default class ProgressiveImageLoading extends Component {
     return clsArr.join(' ');
   }
 
+  renderCanvas() {
+    return this.shouldShowCanvas() ? <canvas className={this.getCanvasClsName(true)} ref={this.setCanvasRef} /> : null;
+  }
+
+  renderPlaceholder() {
+    let { placeholder, placeholderUrl = '', width, height } = this.props;
+    let { className = '' } = placeholder && placeholder.props ? placeholder.props : {};
+    let placeholderProps = {
+      className: `pil-figure-image-placeholder ${className}`,
+    };
+
+    return this.shouldShowPlaceholder() ? (
+      placeholder ? (
+        cloneElement(placeholder, placeholderProps)
+      ) : (
+        <img className="pil-figure-image-placeholder" src={placeholderUrl} width={width} height={height} />
+      )
+    ) : null;
+  }
+
+  renderFallback() {
+    let { fallback, fallbackUrl = '', width, height, alt, title } = this.props;
+    let { className = '' } = fallback && fallback.props ? fallback.props : {};
+    let fallbackProps = {
+      className: `${this.getImageClsName(true)} ${className}`,
+    };
+
+    return this.shouldShowFallback() ? (
+      fallback ? (
+        cloneElement(fallback, fallbackProps)
+      ) : fallbackUrl ? (
+        <img
+          className={this.getImageClsName(true)}
+          src={fallbackUrl}
+          width={width}
+          height={height}
+          alt={alt}
+          title={title}
+        />
+      ) : (
+        <p>Image Not Found.</p>
+      )
+    ) : null;
+  }
+
   render() {
-    let { thumbnailUrl, placeholderUrl, fallbackUrl, width, height, alt, title, containerProps, children } = this.props;
-    let { imageError } = this.state;
+    let { containerProps } = this.props;
     return (
       <div className="pil-figure" ref={this.setFigureRef} {...containerProps}>
         <div className="pil-figure-placeholder">
           <div className="pil-figure-filler" ref={this.setFillerRef} style={this.getFillerStyle()} />
           <div className="pil-figure-media" ref={this.setMediaRef}>
-            {this.shouldShowCanvas() && <canvas className={this.getCanvasClsName(true)} ref={this.setCanvasRef} />}
-            {this.shouldShowPlaceholder() && (
-              <img className="pil-figure-image-placeholder" src={placeholderUrl} width={width} height={height} />
-            )}
-            {!this.shouldShowPlaceholder() && imageError ? (
-              fallbackUrl ? (
-                <img
-                  className={this.getImageClsName(true)}
-                  src={fallbackUrl}
-                  width={width}
-                  height={height}
-                  alt={alt}
-                  title={title}
-                />
-              ) : children ? (
-                children
-              ) : (
-                <p>Image Not Found.</p>
-              )
-            ) : null}
+            {this.renderCanvas()}
+            {this.renderPlaceholder()}
+            {this.renderFallback()}
           </div>
         </div>
       </div>
