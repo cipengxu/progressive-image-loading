@@ -4,6 +4,8 @@
   "description": "Progressive Image Loading",
   "main": "index.js",
   "scripts": {
+    "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"example/**/*.{js,jsx}\" \"*.{js,jsx}\"",
+    "precommit": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=development BABEL_ENV=development webpack-dev-server",
     "build": "cross-env NODE_ENV=production BABEL_ENV=production webpack"
@@ -43,12 +45,25 @@
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
+    "husky": "^1.0.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"
   },
   "babel": {
     "presets": [
       "react-app"
+    ]
+  },
+  "lint-staged": {
+    "example/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ],
+    "*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
     ]
   }
 }

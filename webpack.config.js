@@ -13,14 +13,14 @@ module.exports = {
   entry: path.join(paths.JS, 'app.js'),
   output: {
     path: paths.DIST,
-    filename: 'app.bundle.js'
+    filename: 'app.bundle.js',
   },
   // devServer: {
   //   contentBase: paths.EXAMPLE
   // },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(paths.EXAMPLE, 'index.html')
+      template: path.join(paths.EXAMPLE, 'index.html'),
     }),
     new ExtractTextPlugin('style.bundle.css'),
   ],
@@ -29,25 +29,21 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ]
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
-          use: 'css-loader'
-        })
+          use: 'css-loader',
+        }),
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ]
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-  }
+  },
 };
