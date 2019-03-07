@@ -28,7 +28,6 @@
   "dependencies": {
     "classlist": "^2.0.0",
     "es6-promise": "^4.2.4",
-    "file-loader": "^1.1.5",
     "lodash": "^4.17.10",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
@@ -44,6 +43,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.11",
     "html-webpack-plugin": "^2.30.1",
     "husky": "^1.0.0",
     "lint-staged": "^7.3.0",
